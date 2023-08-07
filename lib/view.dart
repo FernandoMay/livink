@@ -229,7 +229,7 @@ class _ProductSearchViewState extends State<ProductSearchView> {
               ),
               if (product.variantsColor != null)
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
