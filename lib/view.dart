@@ -73,6 +73,7 @@
 // }
 
 import 'package:flutter/cupertino.dart';
+import 'package:livink/detail.dart';
 import 'package:livink/models.dart';
 import 'package:livink/services.dart';
 
@@ -185,87 +186,97 @@ class _ProductSearchViewState extends State<ProductSearchView> {
   }
 
   Widget _buildProductItem(Record product) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Image.network(
-            product.lgImage ?? "https://picsum.photos/500",
-            width: MediaQuery.of(context).size.width * 0.31416,
-            height: MediaQuery.of(context).size.width * 0.31416,
+    return CupertinoButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => ProductDetailScreen(product: product),
           ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  product.productDisplayName ?? "Product Name",
-                  style: CupertinoTheme.of(context)
-                      .textTheme
-                      .textStyle
-                      .copyWith(fontSize: 16),
-                ),
-              ),
-              if (product.listPrice != product.promoPrice)
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Image.network(
+              product.lgImage ?? "https://picsum.photos/500",
+              width: MediaQuery.of(context).size.width * 0.31416,
+              height: MediaQuery.of(context).size.width * 0.31416,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    '\$${product.listPrice?.toStringAsFixed(2)}' ?? '7.10',
-                    style: const TextStyle(
-                        color: CupertinoColors.systemGrey,
-                        fontSize: 18,
-                        decoration: TextDecoration.lineThrough),
+                    product.productDisplayName ?? "Product Name",
+                    style: CupertinoTheme.of(context)
+                        .textTheme
+                        .textStyle
+                        .copyWith(fontSize: 16),
                   ),
                 ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  '\$${product.promoPrice?.toStringAsFixed(2)}' ?? '7.01',
-                  style: const TextStyle(
-                      color: CupertinoColors.systemRed, fontSize: 24),
-                ),
-              ),
-              if (product.variantsColor != null)
+                if (product.listPrice != product.promoPrice)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '\$${product.listPrice?.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                          color: CupertinoColors.systemGrey,
+                          fontSize: 18,
+                          decoration: TextDecoration.lineThrough),
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Colores disponibles:',
-                        style: CupertinoTheme.of(context)
-                            .textTheme
-                            .textStyle
-                            .copyWith(
-                              fontSize: 14,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(width: 4),
-                      Wrap(
-                        spacing: 4,
-                        children: product.variantsColor!
-                            .map(
-                              (color) => Container(
-                                width: 16,
-                                height: 16,
-                                decoration: BoxDecoration(
-                                  color:
-                                      _parseColor(color.colorHex ?? '#3A5C7F'),
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ],
+                  child: Text(
+                    '\$${product.promoPrice?.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                        color: CupertinoColors.systemRed, fontSize: 24),
                   ),
                 ),
-            ],
-          ),
-        ],
+                if (product.variantsColor != null)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Colores disponibles:',
+                          style: CupertinoTheme.of(context)
+                              .textTheme
+                              .textStyle
+                              .copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                        const SizedBox(width: 4),
+                        Wrap(
+                          spacing: 4,
+                          children: product.variantsColor!
+                              .map(
+                                (color) => Container(
+                                  width: 16,
+                                  height: 16,
+                                  decoration: BoxDecoration(
+                                    color: _parseColor(
+                                        color.colorHex ?? '#3A5C7F'),
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
